@@ -65,6 +65,18 @@ class RobocasaInputs(transforms.DataTransformFn):
         # right wrist image below.
         base_image = _parse_image(data["observation/image"])
         wrist_image = _parse_image(data["observation/wrist_image"])
+        
+        # For pi05, use all 3 cameras. Right camera must be available.
+        # For pi0, right camera is padded with zeros and masked out.
+        if self.model_type == _model.ModelType.PI05:
+            if "observation/right_image" not in data:
+                raise ValueError("observation/right_image is required for pi05 but not found in data")
+            right_image = _parse_image(data["observation/right_image"])
+            right_mask = np.True_
+        else:
+            # For pi0 and pi0-FAST, pad with zeros
+            right_image = np.zeros_like(base_image)
+            right_mask = np.False_ if mask_padding else np.True_
 
         # Create inputs dict. Do not change the keys in the dict below.
         inputs = {
@@ -72,14 +84,12 @@ class RobocasaInputs(transforms.DataTransformFn):
             "image": {
                 "base_0_rgb": base_image,
                 "left_wrist_0_rgb": wrist_image,
-                # Pad any non-existent images with zero-arrays of the appropriate shape.
-                "right_wrist_0_rgb": np.zeros_like(base_image),
+                "right_wrist_0_rgb": right_image,
             },
             "image_mask": {
                 "base_0_rgb": np.True_,
                 "left_wrist_0_rgb": np.True_,
-                # Mask any non-existent images with False (if ``mask_padding`` is True).
-                "right_wrist_0_rgb": np.False_ if mask_padding else np.True_,
+                "right_wrist_0_rgb": right_mask,
             },
         }
 

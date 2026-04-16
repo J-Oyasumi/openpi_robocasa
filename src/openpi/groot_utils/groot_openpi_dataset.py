@@ -118,6 +118,9 @@ class GrootOpenpiSingleDataset(LeRobotSingleDataset):
             "prompt": item["annotation.human.task_description"][0], # TODO: Soroush change this later to task_description
             # "prompt": item["annotation.human.coarse_action"][0], # TODO: Soroush change this later to task_description
         }
+        # Add right camera if available
+        if "video.robot0_agentview_right" in item:
+            new_item["observation/right_image"] = item["video.robot0_agentview_right"][0]
         return new_item
 
 
@@ -241,6 +244,9 @@ class GrootOpenpiMultiDataset(LeRobotMixtureDataset):
             "prompt": item["annotation.human.task_description"][0], # TODO: Soroush change this later to task_description
             # "prompt": item["annotation.human.coarse_action"][0], # TODO: Soroush change this later to task_description
         }
+        # Add right camera if available
+        if "video.robot0_agentview_right" in item:
+            new_item["observation/right_image"] = item["video.robot0_agentview_right"][0]
         return new_item
 
 
