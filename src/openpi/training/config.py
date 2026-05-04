@@ -1096,7 +1096,7 @@ _CONFIGS = [
     #
     TrainConfig(
         name="pi0_robocasa_target50",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1111,7 +1111,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_finetune_target_atomic_seen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1126,7 +1126,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_finetune_target_composite_seen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1141,7 +1141,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_finetune_target_composite_unseen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1156,7 +1156,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_target_atomic_seen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1171,7 +1171,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_target_atomic_seen_random_weight_init",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1186,7 +1186,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_target_atomic_seen_paligemma_init",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1201,7 +1201,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_target_composite_seen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1216,7 +1216,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_target_composite_unseen",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1231,7 +1231,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_pretrain_human300_mg60",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
@@ -1252,7 +1252,7 @@ _CONFIGS = [
     ),
     TrainConfig(
         name="pi0_robocasa_pretrain_human300",
-        model=pi0.Pi0Config(
+        model=pi0_config.Pi0Config(
             max_token_len=96,
         ),
         data=LeRobotRobocasaDataConfig(
