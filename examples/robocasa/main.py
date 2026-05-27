@@ -37,7 +37,7 @@ class Args:
 
     split: str = "pretrain"
     num_trials: int = 50  # Number of rollouts per task
-    task_set: list = None
+    task_set: str = None  # key into TASK_SET_REGISTRY
 
     #################################################################################################################
     # Utils
@@ -59,7 +59,7 @@ def eval_main(args: Args) -> None:
     host = args.host
     port = args.port
 
-    all_env_names = TASK_SET_REGISTRY[args.task_soup]
+    all_env_names = TASK_SET_REGISTRY[args.task_set]
 
     for env_name in all_env_names:
         eval_env(

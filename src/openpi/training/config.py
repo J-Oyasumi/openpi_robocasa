@@ -1308,6 +1308,26 @@ _CONFIGS = [
         batch_size=16,
         num_workers=4,
     ),
+    # pi05 pretrain on the 10 seen tasks (pretrain split). Eval seen->target, unseen->pretrain.
+    TrainConfig(
+        name="pi05_robocasa_seen_pretrain",
+        model=pi0_config.Pi0Config(pi05=True, max_token_len=200),
+        data=LeRobotRobocasaDataConfig(
+            data_dirs=DATASET_SOUP_REGISTRY["used_tasks_pretrain"],
+        ),
+        weight_loader=weight_loaders.CheckpointWeightLoader("gs://openpi-assets/checkpoints/pi05_base/params"),
+        lr_schedule=_optimizer.CosineDecaySchedule(
+            warmup_steps=1_000,
+            peak_lr=2.5e-5,
+            decay_steps=60_000,
+            decay_lr=2.5e-6,
+        ),
+        num_train_steps=60_000,
+        save_interval=5_000,
+        keep_period=10_000,
+        batch_size=64,
+        num_workers=4,
+    ),
 ]
 
 if len({config.name for config in _CONFIGS}) != len(_CONFIGS):
