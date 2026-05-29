@@ -4,7 +4,7 @@ import os
 import numpy as np
 import math
 from termcolor import colored
-from robocasa.utils.dataset_registry import TARGET_TASKS, LIFELONG_LEARNING_TASKS
+from robocasa.utils.dataset_registry import TARGET_TASKS, LIFELONG_LEARNING_TASKS, SEEN_TASKS, UNSEEN_TASKS
 from collections import OrderedDict
 
 
@@ -36,6 +36,10 @@ TASK_GROUP_MAPPING["lifelong_learning_phase1"] = TARGET_TASKS["atomic_seen"]
 TASK_GROUP_MAPPING["lifelong_learning_phase2"] = LIFELONG_LEARNING_TASKS["lifelong_learning_phase2"]
 TASK_GROUP_MAPPING["lifelong_learning_phase3"] = LIFELONG_LEARNING_TASKS["lifelong_learning_phase3"]
 TASK_GROUP_MAPPING["lifelong_learning_phase4"] = LIFELONG_LEARNING_TASKS["lifelong_learning_phase4"]
+# seen/unseen generalization split (eval seen->target, unseen->pretrain)
+TASK_GROUP_MAPPING["seen_tasks"] = SEEN_TASKS
+TASK_GROUP_MAPPING["unseen_tasks"] = UNSEEN_TASKS
+
 
 def compute_stats(
         checkpoint_path,
@@ -50,8 +54,10 @@ def compute_stats(
     assert os.path.exists(checkpoint_path)
 
     for split in ["pretrain", "target"]:
-        split_dir = os.path.join(checkpoint_path, "evals", split)
+        split_dir = os.path.join(checkpoint_path, "evals_1.5", split)
         if not os.path.exists(split_dir):
+            if verbose:
+                print(colored(f"[skip] no results dir: {split_dir}", "red"))
             continue
 
         for task_name in os.listdir(split_dir):
@@ -84,7 +90,8 @@ def compute_stats(
         
         for split in ["pretrain", "target"]:
             split_vals = [group_stats["task_stats"][task][split] for task in task_names]
-            group_stats[f"avg_{split}"] = np.mean([val for val in split_vals if val is not None])
+            valid_vals = [val for val in split_vals if val is not None]
+            group_stats[f"avg_{split}"] = np.mean(valid_vals) if valid_vals else float("nan")
 
         all_group_stats[group_name] = group_stats
 
@@ -118,5 +125,11 @@ if __name__ == "__main__":
         type=str,
         required=True,
     )
+    parser.add_argument(
+        "--task_groups",
+        type=str,
+        nargs="+",
+        default=["seen_tasks", "unseen_tasks"],
+    )
     args = parser.parse_args()
-    compute_stats(args.dir, verbose=True)
+    compute_stats(args.dir, task_groups=args.task_groups, verbose=True)
